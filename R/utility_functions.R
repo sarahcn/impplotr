@@ -141,7 +141,7 @@ makeAllPlots <- function(imp_dir, out_dir, start_chr = 1, end_chr = 23,
     
     ## II. Summarize imputed metrics
     if (is.element("imputed", sets) & summary) {
-        impSummary(start_chr, end_chr, parX, out_dir, project,
+        impSummary(start_chr, end_chr, parX, out_dir,
                    mets_all = mets_all, keep_list = keep_list)
     }
     

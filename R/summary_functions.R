@@ -109,7 +109,7 @@ maskedSummary <- function(maf_thresh=0.05, mets_all, out_dir, start_chr, end_chr
     df$metric <- rep(c("mean", "median"), 2)
     
     # make logical flag that's is TRUE for vars below maf thresh
-    lm.sel <- mets.mask$MAF < maf_threshx
+    lm.sel <- mets.mask$MAF < maf_thresh
     
     # fill in avg values for metrics - loop through metrics
     for (met in met.nms) {

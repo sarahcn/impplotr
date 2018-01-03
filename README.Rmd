@@ -42,5 +42,3 @@ I created this package from a set of functions I've used internally for many yea
 
 I welcome other suggestions via GitHub issues tracking!
 ~Sarah
-
-## test!
