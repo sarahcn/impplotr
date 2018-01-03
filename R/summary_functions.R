@@ -2,15 +2,28 @@
 ## optional argument to provide "snp keeplist":
 ## 2 col df of variant ID and chrom for all variants initially selected into imputation
 
-impSummary <- function(imp_dir, start_chr, end_chr, pxarX, out_dir,
-                       project, mets.all, keep_list=NA) {
+#' Create counts of imputation basis and target variants.
+
+#' @param imp_dir Imputation directory
+#' @param start_chr Start chromosome (1:23)
+#' @param end_chr End chromosome (1:23)
+#' @param parX logical whether to include PAR (not implemented)
+#' @param out_dir Output directory
+#' @param project Project name
+#' @param mets_all Dataframe of imputation metrics created by \code{\link{readMetrics}}
+#' @param keep_list File path of an initial variant keep list, with columns variant name and chromosome (integer)
+
+#' @return Writes a csv file of variant counts
+
+impSummary <- function(imp_dir, start_chr, end_chr, parX, out_dir,
+                       project, mets_all, keep_list=NA) {
     message("\nPrinting variant summary by chrom\n")
     
-    # get counts for mets.all: imputation basis, study only, imputed
+    # get counts for mets_all: imputation basis, study only, imputed
     # then user can combine in anyway desired
-    imp.cnts <- unclass(table(mets.all$chr[mets.all$Genotyped %in% "Imputed"]))
-    geno.cnts <- unclass(table(mets.all$chr[mets.all$Genotyped %in% "Genotyped"]))
-    studyonly.cnts <- unclass(table(mets.all$chr[mets.all$Genotyped %in% "Typed_Only"]))
+    imp.cnts <- unclass(table(mets_all$chr[mets_all$Genotyped %in% "Imputed"]))
+    geno.cnts <- unclass(table(mets_all$chr[mets_all$Genotyped %in% "Genotyped"]))
+    studyonly.cnts <- unclass(table(mets_all$chr[mets_all$Genotyped %in% "Typed_Only"]))
     
     cnts.dat <- data.frame(chromosome = names(imp.cnts), imp.basis.vars = geno.cnts, 
         imputed.vars = imp.cnts, study.only.vars = studyonly.cnts)
@@ -52,7 +65,7 @@ impSummary <- function(imp_dir, start_chr, end_chr, pxarX, out_dir,
     
     # report on fraction of imputed variants passing various Rsq thresholds
     
-    mets.imp <- mets.all[mets.all$Genotyped %in% "Imputed", ]
+    mets.imp <- mets_all[mets_all$Genotyped %in% "Imputed", ]
     
     message("\nSummaries of imputed variants passing various 'Rsq' score thresholds:")
     
@@ -65,12 +78,20 @@ impSummary <- function(imp_dir, start_chr, end_chr, pxarX, out_dir,
 }  # close 'impSummary' function
 
 
-## summarize masked metrics
+#' Summarize masked variant metrics 
 
-maskedSummary <- function(maf_thresh, mets_all, out_dir, start_chr, end_chr) {
+#' @param maf_thresh Minor allele frequency threshold for grouping masked variants 
+#' @param mets_all Dataframe of imputation metrics created by \code{\link{readMetrics}}
+#' @param Output directory
+#' @param Start chromosome (1:23)
+#' @param End chromosome (1:23)
+
+#' @return Writes a csv file of masked metric summaries
+
+maskedSummary <- function(maf_thresh=0.05, mets_all, out_dir, start_chr, end_chr) {
     
     # subset metrics to vars in the 'Loo' (leave-one-out) masking expirements
-    mets.mask <- mets.all[mets.all$Genotyped %in% "Genotyped", ]
+    mets.mask <- mets_all[mets_all$Genotyped %in% "Genotyped", ]
     
     # loop through MAF categories to summarize masked metrics
     type <- "SNP"  # can expand to iterate over type=SNP, type=SV/INDEL

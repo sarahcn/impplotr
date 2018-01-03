@@ -1,5 +1,11 @@
-# read in metrics file from University of Michigan Imputation Server
-# optimized for use with reference HRC 1.1 (SNP only)
+#' Read in imputation metrics files from University of Michigan Imputation Server 
+#' Note: optimized for use with reference HRC 1.1 (SNP only)
+
+#' @param imp_dir Imputation directory
+#' @param project Project name
+#' @param start_chr Start chromosome (1:23)
+#' @param end_chr End chromosome (1:23)
+#' @param parX logical whether to include PAR (not implemented)
 
 readMetrics <- function(imp_dir, project, start_chr, end_chr, parX) {
     
@@ -95,13 +101,26 @@ readMetrics <- function(imp_dir, project, start_chr, end_chr, parX) {
 }
 
 
-# wrapper function to run all plotting and summary functions in impplotr
+#' Wrapper function to run all plotting and summary functions
+
+#' @param imp_dir Imputation directory
+#' @param out_dir Output directory
+#' @param start_chr Start chromosome (1:23)
+#' @param end_chr End chromosome (1:23)
+#' @param sets Sets of imputation summaries
+#' @param plots Sets of plots
+#' @param fmt Plot output format (only pdf supported)
+#' @param summary Logical indicator of whether to run \code{\link{impSummary}}
+#' @param rsq_filt Rsq threshold used in \code{\link{maskedPlots}} 
+#' @param maf_thresh Minor allele frequency threshold for grouping masked variants in \code{\link{maskedSummary}}
+#' @param parX logical whether to include PAR (not implemented)
 
 makePlots <- function(imp_dir, out_dir, project, start_chr = 1, end_chr = 23,
                                sets = c("imputed", "masked"),
                                plots = c("boxplot", "info_by_maf", "masked_check_strand"),
                                fmt = "pdf", summary = TRUE, rsq_filt = 0.8,
                                verbose = TRUE, maf_thresh = 0.05,  parX = parX) {
+  
     # I. Read in metrics and annotate with alleles
     mets_all <- readMetrics(imp_dir, project, start_chr, end_chr, Xpar)
     

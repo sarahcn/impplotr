@@ -1,7 +1,16 @@
-# graph imputed metrics: info by MAF
+#' Graph imputed metrics: Rsq by MAF
+
+#' @param out_dir Output directory
+#' @param start_chr Start chromosome (1:23)
+#' @param end_chr End chromosome (1:23)
+#' @param parX logical whether to include PAR (not implemented)
+#' @param fmt Plot output format (only pdf supported)
+#' @param mets_all Dataframe of imputation metrics created by \code{\link{readMetrics}}
+
+#' @return Plot of Rsq by MAF in imputed variants
 
 impPlotsInfo <- function(out_dir, start_chr, end_chr,
-                         parX, fmt, maf, mets_all) {
+                         parX, fmt, mets_all) {
     
     # excerpt imputed vars (all snps)
     mets_all_imp <- mets_all[mets_all$Genotyped %in% "Imputed", ]
@@ -84,7 +93,18 @@ impPlotsInfo <- function(out_dir, start_chr, end_chr,
     
 }
 
-## graph imputed metrics: by-chrom boxplots
+
+
+#' Graph imputed metrics: by chromosome boxplots
+
+#' @param out_dir Output directory
+#' @param start_chr Start chromosome (1:23)
+#' @param end_chr End chromosome (1:23)
+#' @param parX logical whether to include PAR (not implemented)
+#' @param mets_all Dataframe of imputation metrics created by \code{\link{readMetrics}}
+
+#' @return Boxplots by chromosome of MAF and Rsq
+
 impPlotsByChr <- function(out_dir, start_chr, end_chr, parX, mets_all) {
     
     # excerpt imputed vars (all snps)
@@ -138,8 +158,18 @@ impPlotsByChr <- function(out_dir, start_chr, end_chr, parX, mets_all) {
     
 }  
 
-## graph masked metrics
-maskedPlots <- function(out_dir, start_chr, end_chr, parX, maf, rsq_filt, mets_all) {
+#' Graph masked variant  metrics
+
+#' @param out_dir Output directory
+#' @param start_chr Start chromosome (1:23)
+#' @param end_chr End chromosome (1:23)
+#' @param parX logical whether to include PAR (not implemented)
+#' @param rsq_filt Rsq threshold for binning masked variants
+#' @param mets_all Dataframe of imputation metrics created by \code{\link{readMetrics}}
+
+#' @return 4x4 plot of masked variant metrics
+
+maskedPlots <- function(out_dir, start_chr, end_chr, parX, rsq_filt, mets_all) {
     
     # subset metrics to vars in the 'Loo' (leave-one-out) masking expirements
     mets.mask <- mets_all[mets_all$Genotyped %in% "Genotyped", ]
@@ -262,7 +292,18 @@ maskedPlots <- function(out_dir, start_chr, end_chr, parX, maf, rsq_filt, mets_a
     
 } 
 
-## plot masked SNP strand check
+
+#' Plot masked variant strand check
+
+#' @param out_dir Output directory
+#' @param start_chr Start chromosome (1:23)
+#' @param end_chr End chromosome (1:23)
+#' @param mets_all Dataframe of imputation metrics created by \code{\link{readMetrics}}
+
+#' @return Scatterplot of masked variant metrics that can help identify systematic strand alignment issues
+
+#' Caveat the resulting plot can be messy. Read the log file to understand the count of variants in the problematic quadrant: those imputed with high confidence but low concordance.
+
 maskedStrandCheck <- function(out_dir, start_chr, end_chr, mets_all) {
 
     message("\nMaking masked SNP strand check plot\n")
