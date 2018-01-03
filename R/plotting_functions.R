@@ -8,11 +8,13 @@
 #' @param mets_all Dataframe of imputation metrics created by \code{\link{readMetrics}}
 
 #' @return Plot of Rsq by MAF in imputed variants
+#' @export
 
 #' @import ggplot2
+#' @import gridExtra
 
 impPlotsInfo <- function(out_dir, start_chr, end_chr,
-                         parX, fmt, mets_all) {
+                         parX=FALSE, fmt="pdf", mets_all) {
     
     # excerpt imputed vars (all snps)
     mets_all_imp <- mets_all[mets_all$Genotyped %in% "Imputed", ]
@@ -36,17 +38,18 @@ impPlotsInfo <- function(out_dir, start_chr, end_chr,
     mafs_save <- NULL
     
     mets_curr <- mets_all_imp
-    
+
+    # note - this is where I used to iterate over SNVs vs SVs/indels
     set <- "all"
-    message("\nplotting info by MAF bin for ", set, " imputed variants\n")
+    # message("\nplotting info by MAF bin for ", set, " imputed variants\n")
     
     ####### MAF data frame loop
     mafs_list <- seq(0, 0.5, length.out = 51)
     mafs <- as.data.frame(mafs_list[-51])
-    names(mafs) <- "maf_min"
-    mafs$nsnps <- mafs$mean_rsq <- rep(NA, times = length(mafs$maf_min))
+    names(mafs) <- "maf.min"
+    mafs$nsnps <- mafs$mean_rsq <- rep(NA, times = nrow(mafs))
     
-    for (i in 1:length(mafs$maf.min)) {
+    for (i in 1:nrow(mafs)) {
         # bins are defined as [lower, upper)
         maf_sel <- with(mets_curr, MAF > mafs_list[i] & MAF <= mafs_list[i + 1])
         
@@ -64,7 +67,7 @@ impPlotsInfo <- function(out_dir, start_chr, end_chr,
     ####### close MAF data frame loop
     
     ## plot values at the mid point of maf bin
-    mafs$xval <- mafs$maf_min + 0.005
+    mafs$xval <- mafs$maf.min + 0.005
     
     p1 <- ggplot(mafs, aes(x = xval, y = mean_rsq)) + 
                 geom_point(shape = 24, fill = "black", size = 3) + 
@@ -106,8 +109,9 @@ impPlotsInfo <- function(out_dir, start_chr, end_chr,
 #' @param mets_all Dataframe of imputation metrics created by \code{\link{readMetrics}}
 
 #' @return Boxplots by chromosome of MAF and Rsq
+#' @export
 
-impPlotsByChr <- function(out_dir, start_chr, end_chr, parX, mets_all) {
+impPlotsByChr <- function(out_dir, start_chr, end_chr, parX=FALSE, mets_all) {
     
     # excerpt imputed vars (all snps)
     mets_all_imp <- mets_all[mets_all$Genotyped %in% "Imputed", ]
@@ -170,8 +174,9 @@ impPlotsByChr <- function(out_dir, start_chr, end_chr, parX, mets_all) {
 #' @param mets_all Dataframe of imputation metrics created by \code{\link{readMetrics}}
 
 #' @return 4x4 plot of masked variant metrics
+#' @export
 
-maskedPlots <- function(out_dir, start_chr, end_chr, parX, rsq_filt, mets_all) {
+maskedPlots <- function(out_dir, start_chr, end_chr, parX=FALSE, rsq_filt, mets_all) {
     
     # subset metrics to vars in the 'Loo' (leave-one-out) masking expirements
     mets.mask <- mets_all[mets_all$Genotyped %in% "Genotyped", ]
@@ -306,6 +311,8 @@ maskedPlots <- function(out_dir, start_chr, end_chr, parX, rsq_filt, mets_all) {
 
 #' Caveat the resulting plot can be messy. Read the log file to understand the count of variants in the problematic quadrant: those imputed with high confidence but low concordance.
 
+#' @export
+
 maskedStrandCheck <- function(out_dir, start_chr, end_chr, mets_all) {
 
     message("\nMaking masked SNP strand check plot\n")
@@ -314,7 +321,7 @@ maskedStrandCheck <- function(out_dir, start_chr, end_chr, mets_all) {
     mets.mask <- mets_all[mets_all$Genotyped %in% "Genotyped", ]
     
     # flag strand ambiguous SNPs
-    mets.mask$alleles <- with(mets.mask, pasteSorted(REF.0., ALT.1.))
+    mets.mask$alleles <- with(mets.mask, GWASTools::pasteSorted(REF.0., ALT.1.))
     mets.mask$strand.amb <- is.element(mets.mask$alleles, c("A/T", "C/G"))
     
     ## ggplot: High Density Scatterplot with Color Transparency

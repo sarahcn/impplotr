@@ -2,9 +2,8 @@
 ## optional argument to provide "snp keeplist":
 ## 2 col df of variant ID and chrom for all variants initially selected into imputation
 
-#' Create counts of imputation basis and target variants.
+#' Create counts of imputation basis and target variants
 
-#' @param imp_dir Imputation directory
 #' @param start_chr Start chromosome (1:23)
 #' @param end_chr End chromosome (1:23)
 #' @param parX logical whether to include PAR (not implemented)
@@ -14,8 +13,9 @@
 #' @param keep_list File path of an initial variant keep list, with columns variant name and chromosome (integer)
 
 #' @return Writes a csv file of variant counts
+#' @export
 
-impSummary <- function(imp_dir, start_chr, end_chr, parX, out_dir,
+impSummary <- function(start_chr, end_chr, parX=FALSE, out_dir,
                        project, mets_all, keep_list=NA) {
     message("\nPrinting variant summary by chrom\n")
     
@@ -82,11 +82,12 @@ impSummary <- function(imp_dir, start_chr, end_chr, parX, out_dir,
 
 #' @param maf_thresh Minor allele frequency threshold for grouping masked variants 
 #' @param mets_all Dataframe of imputation metrics created by \code{\link{readMetrics}}
-#' @param Output directory
-#' @param Start chromosome (1:23)
-#' @param End chromosome (1:23)
+#' @param out_dir Output directory
+#' @param start_chr Start chromosome (1:23)
+#' @param end_chr End chromosome (1:23)
 
 #' @return Writes a csv file of masked metric summaries
+#' @export
 
 maskedSummary <- function(maf_thresh=0.05, mets_all, out_dir, start_chr, end_chr) {
     
