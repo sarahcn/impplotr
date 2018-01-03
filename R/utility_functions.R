@@ -4,7 +4,6 @@
 #' Note: optimized for use with reference HRC 1.1 (SNP only)
 
 #' @param imp_dir Imputation directory containing metrics files
-#' @param project Project name
 #' @param start_chr Start chromosome (1:23)
 #' @param end_chr End chromosome (1:23)
 #' @param parX logical whether to include PAR (not implemented)
@@ -18,7 +17,7 @@
 
 #' @export
 
-readMetrics <- function(imp_dir, project, start_chr, end_chr, parX=FALSE) {
+readMetrics <- function(imp_dir, start_chr, end_chr, parX=FALSE) {
     
     chr.ranges <- start_chr:end_chr
     chr.ranges.fn <- chr.ranges
@@ -116,7 +115,6 @@ readMetrics <- function(imp_dir, project, start_chr, end_chr, parX=FALSE) {
 
 #' @param imp_dir Imputation directory
 #' @param out_dir Output directory
-#' @param project Project name
 #' @param start_chr Start chromosome (1:23)
 #' @param end_chr End chromosome (1:23)
 #' @param sets Sets of imputation summaries
@@ -131,7 +129,7 @@ readMetrics <- function(imp_dir, project, start_chr, end_chr, parX=FALSE) {
 
 #' @export
 
-makeAllPlots <- function(imp_dir, out_dir, project, start_chr = 1, end_chr = 23,
+makeAllPlots <- function(imp_dir, out_dir, start_chr = 1, end_chr = 23,
                       sets = c("imputed", "masked"),
                       plots = c("boxplot", "info_by_maf", "masked_check_strand"),
                       fmt = "pdf", summary = TRUE, rsq_filt = 0.8,
@@ -139,7 +137,7 @@ makeAllPlots <- function(imp_dir, out_dir, project, start_chr = 1, end_chr = 23,
                          keep_list = NA) {
   
     # I. Read in metrics and annotate with alleles
-    mets_all <- readMetrics(imp_dir, project, start_chr, end_chr, parX)
+    mets_all <- readMetrics(imp_dir, start_chr, end_chr, parX)
     
     ## II. Summarize imputed metrics
     if (is.element("imputed", sets) & summary) {

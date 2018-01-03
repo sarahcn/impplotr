@@ -8,7 +8,6 @@
 #' @param end_chr End chromosome (1:23)
 #' @param parX logical whether to include PAR (not implemented)
 #' @param out_dir Output directory
-#' @param project Project name
 #' @param mets_all Dataframe of imputation metrics created by \code{\link{readMetrics}}
 #' @param keep_list File path of an initial variant keep list, with columns variant name and chromosome (integer)
 
@@ -16,7 +15,7 @@
 #' @export
 
 impSummary <- function(start_chr, end_chr, parX=FALSE, out_dir,
-                       project, mets_all, keep_list=NA) {
+                       mets_all, keep_list=NA) {
     message("\nPrinting variant summary by chrom\n")
     
     # get counts for mets_all: imputation basis, study only, imputed
@@ -60,7 +59,7 @@ impSummary <- function(start_chr, end_chr, parX=FALSE, out_dir,
     }
     
     # write out csv snp summary
-    filo <- paste0(out_dir, "/", project, "_chr", start_chr, "-", end_chr, ".SNPsummary.csv")
+    filo <- paste0(out_dir, "/SNPSummary_chr", start_chr, "-", end_chr, ".csv")
     write.csv(cnts.dat, file = filo, eol = "\n", quote = FALSE, row.names = FALSE)
     
     # report on fraction of imputed variants passing various Rsq thresholds
@@ -110,7 +109,7 @@ maskedSummary <- function(maf_thresh=0.05, mets_all, out_dir, start_chr, end_chr
     df$metric <- rep(c("mean", "median"), 2)
     
     # make logical flag that's is TRUE for vars below maf thresh
-    lm.sel <- mets.mask$MAF < maf_thresh
+    lm.sel <- mets.mask$MAF < maf_threshx
     
     # fill in avg values for metrics - loop through metrics
     for (met in met.nms) {
