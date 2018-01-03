@@ -9,6 +9,8 @@
 
 #' @return Plot of Rsq by MAF in imputed variants
 
+#' @import ggplot2
+
 impPlotsInfo <- function(out_dir, start_chr, end_chr,
                          parX, fmt, mets_all) {
     
