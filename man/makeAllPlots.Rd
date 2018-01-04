@@ -4,7 +4,7 @@
 \alias{makeAllPlots}
 \title{Wrapper function to run all plotting and summary functions}
 \usage{
-makeAllPlots(imp_dir, out_dir, project, start_chr = 1, end_chr = 23,
+makeAllPlots(imp_dir, out_dir, start_chr = 1, end_chr = 23,
   sets = c("imputed", "masked"), plots = c("boxplot", "info_by_maf",
   "masked_check_strand"), fmt = "pdf", summary = TRUE, rsq_filt = 0.8,
   verbose = TRUE, maf_thresh = 0.05, parX = FALSE, keep_list = NA)
@@ -13,8 +13,6 @@ makeAllPlots(imp_dir, out_dir, project, start_chr = 1, end_chr = 23,
 \item{imp_dir}{Imputation directory}
 
 \item{out_dir}{Output directory}
-
-\item{project}{Project name}
 
 \item{start_chr}{Start chromosome (1:23)}
 

@@ -4,7 +4,7 @@
 \alias{impSummary}
 \title{Create counts of imputation basis and target variants}
 \usage{
-impSummary(start_chr, end_chr, parX = FALSE, out_dir, project, mets_all,
+impSummary(start_chr, end_chr, parX = FALSE, out_dir, mets_all,
   keep_list = NA)
 }
 \arguments{
@@ -15,8 +15,6 @@ impSummary(start_chr, end_chr, parX = FALSE, out_dir, project, mets_all,
 \item{parX}{logical whether to include PAR (not implemented)}
 
 \item{out_dir}{Output directory}
-
-\item{project}{Project name}
 
 \item{mets_all}{Dataframe of imputation metrics created by \code{\link{readMetrics}}}
 

@@ -4,12 +4,10 @@
 \alias{readMetrics}
 \title{Read in imputation metrics files}
 \usage{
-readMetrics(imp_dir, project, start_chr, end_chr, parX = FALSE)
+readMetrics(imp_dir, start_chr, end_chr, parX = FALSE)
 }
 \arguments{
 \item{imp_dir}{Imputation directory containing metrics files}
-
-\item{project}{Project name}
 
 \item{start_chr}{Start chromosome (1:23)}
 
