@@ -4,7 +4,6 @@ Version: 0.0.0.9000
 Authors@R: person("Sarah", "Nelson", email = "sarahcn@uw.edu", role = c("aut", "cre"))
 Description: This package contains functions to read in, plot, and create tabular summaries
 	of imputed and masked variant metrics output by the University of Michigan Imputation Server.
-Depends: R (>= 3.4.1)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
